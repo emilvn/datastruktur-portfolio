@@ -4,6 +4,7 @@ export default class DoublyLinkedList {
 
     constructor(...nodes) {
         this.head = nodes[0];
+        this.tail = nodes[0];
         for (let i = 1; i < nodes.length; i++) {
             const current = nodes[i]
             current.next = this.head;
@@ -13,7 +14,16 @@ export default class DoublyLinkedList {
     }
 
     addLast(data) {
-        
+        const node = new Node(data);
+        if (!this.tail) {
+            this.head = node;
+            this.tail = node;
+            return;
+        }
+
+        node.prev = this.tail;
+        node.prev.next = node;
+        this.tail = node;
     }
 
     addFirst(data) {
@@ -30,11 +40,24 @@ export default class DoublyLinkedList {
     }
 
     get(index) {
-
+        let node = this.head;
+        for (let i = 0; i < index; i++) {
+            node = node?.next;
+        }
+        return node ?? null;
     }
 
     indexOf(data) {
-        
+        let node = this.head;
+        let i = 0;
+        while (!!node) {
+            if (node.data === data) {
+                return i;
+            }
+            node = node.next;
+            i++;
+        }
+        return -1; // not found
     }
 
     insertAfter(index, data) {
