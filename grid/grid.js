@@ -33,7 +33,7 @@ export class Grid {
 
   rowColFor(i) {
     const col = i % this.colNum;
-    const row = Math.floor(i / this.rowNum);
+    const row = Math.floor(i / this.colNum);
     return { col, row };
   }
 
