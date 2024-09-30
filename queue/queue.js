@@ -39,17 +39,35 @@ export class Queue {
   }
 
   /**
-   * Nice!
+   * Gets data of first node/head of queue
    */
-  getHead() {
+  peek() {
     return this.head?.data;
   }
 
   /**
-   * Nice!
+   * Gets data of last node/tail of queue
    */
   getTail() {
     return this.tail?.data;
+  }
+
+  /**
+   * Gets data of node at index
+   * @param {number} index index of node to get
+   * @returns data of node at index or undefined if index is out of bounds
+   */
+  get(index) {
+    let node = this.head;
+    let i = 0;
+    while (node) {
+      if (i === index) {
+        return node.data;
+      }
+      node = node.next;
+      i++;
+    }
+    return undefined;
   }
 
   /**
