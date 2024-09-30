@@ -9,7 +9,7 @@ export default class SinglyLinkedList {
   tail = null;
 
   /**
-   * @param  {...Node} nodes list of nodes to store in DoublyLinkedList on construction. Will be stored in the same order as args.
+   * @param  {...Node} nodes list of nodes to store in SinglyLinkedList on construction. Will be stored in the same order as args.
    */
   constructor(...nodes) {
     // Insert nodes starting with tail to match indices in linked list to the order of the args
@@ -46,7 +46,7 @@ export default class SinglyLinkedList {
   remove(data) {
     let node = this.head;
     let found = false;
-    while (!!node) {
+    while (node) {
       if (node.data === data) {
         found = true;
         break;
@@ -111,7 +111,7 @@ export default class SinglyLinkedList {
    */
   getNodeWith(data) {
     let node = this.head;
-    while (!!node) {
+    while (node) {
       if (node.data === data) {
         return node;
       }
@@ -142,7 +142,7 @@ export default class SinglyLinkedList {
     }
 
     let newTail = this.head;
-    while (!!newTail) {
+    while (newTail) {
       if (newTail.next === this.tail) {
         this.tail = newTail;
         this.tail.next = null;
@@ -163,7 +163,7 @@ export default class SinglyLinkedList {
       return;
     }
 
-    while (!!prevNode) {
+    while (prevNode) {
       if (prevNode.next === node) {
         prevNode.next = node.next;
         return;
@@ -189,7 +189,7 @@ export default class SinglyLinkedList {
   size() {
     let node = this.head;
     let size = 0;
-    while (!!node) {
+    while (node) {
       size++;
       node = node.next;
     }
@@ -202,7 +202,7 @@ export default class SinglyLinkedList {
   dumpList() {
     let node = this.head;
     let output = node?.data;
-    while (!!node) {
+    while (node) {
       if (node !== this.head) {
         output += " -> " + node.data;
       }
