@@ -21,10 +21,35 @@ export class Queue {
   }
 
   /**
+   * Returns an iterator that allows you to iterate over the queue
+   * @returns {Iterator} iterator
+   */
+  [Symbol.iterator]() {
+    let current = this.head;
+    return {
+      next() {
+        if (!current) {
+          return { done: true };
+        }
+        const data = current.data;
+        current = current.next;
+        return { value: data, done: false };
+      },
+    };
+  }
+
+  /**
    * Nice!
    */
   getHead() {
     return this.head?.data;
+  }
+
+  /**
+   * Nice!
+   */
+  getTail() {
+    return this.tail?.data;
   }
 
   /**
