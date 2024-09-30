@@ -49,10 +49,37 @@ queue = new Queue(a, b, c);
 console.log(queue.size()); // should be 3
 console.log("---------------------------");
 
-// Test getHead
-console.log("Test getHead");
+// Test peek
+console.log("Test peek");
 resetNodes();
 queue = new Queue(a, b, c);
 queue.dump();
-console.log("Head: ", queue.getHead());
+console.log("Head: ", queue.peek());
+console.log("---------------------------");
+
+// Test Iterator
+console.log("Test Iterator");
+resetNodes();
+queue = new Queue(a, b, c);
+queue.dump();
+for (const d of queue) {
+  console.log(d);
+}
+console.log("---------------------------");
+
+// Test clear
+console.log("Test clear");
+resetNodes();
+queue = new Queue(a, b, c);
+queue.dump();
+queue.clear();
+queue.dump();
+console.log("---------------------------");
+
+// Test get
+console.log("Test get");
+resetNodes();
+queue = new Queue(a, b, c);
+queue.dump();
+console.log(queue.get(1)); // Should be 'B'
 console.log("---------------------------");
