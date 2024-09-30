@@ -66,7 +66,7 @@ export class Queue {
    * @param {Node} node
    */
   enqueueNode(node) {
-    if (this.tail === this.head) {
+    if (!this.head) {
       this.head = node;
       this.tail = node;
       this._size++;
