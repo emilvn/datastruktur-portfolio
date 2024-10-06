@@ -175,7 +175,8 @@ export default class DoublyLinkedList {
      */
     addNodeLast(node) {
         if (!this.tail) {
-            this.clear();
+            this.head = node;
+            this.tail = node;
             return;
         }
 
@@ -190,7 +191,8 @@ export default class DoublyLinkedList {
      */
     addNodeFirst(node) {
         if (!this.head) {
-            this.clear();
+            this.head = node;
+            this.tail = node;
             return;
         }
 
