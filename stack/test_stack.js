@@ -1,7 +1,7 @@
 import Stack from "./stack.js";
 
 class Node {
-  next = null;
+  prev = null;
   data;
 
   constructor(data) {
@@ -46,7 +46,7 @@ console.log("Test add");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-stack.add("D");
+stack.push("D");
 stack.dump();
 console.log("---------------------------");
 
@@ -55,7 +55,7 @@ console.log("Test getTop");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-console.log(stack.getTop()); // Should be 'C'
+console.log(stack.peek()); // Should be 'C'
 console.log("---------------------------");
 
 // Test removeTop
@@ -63,7 +63,7 @@ console.log("Test removeTop");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-console.log(stack.removeTop()); // Should be 'C'
+console.log(stack.pop()); // Should be 'C'
 stack.dump();
 console.log("---------------------------");
 
@@ -72,7 +72,7 @@ console.log("Test addNode");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-stack.addNode(d);
+stack.pushNode(d);
 stack.dump();
 console.log("---------------------------");
 
@@ -81,7 +81,7 @@ console.log("Test getTopNode");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-console.log(stack.getTopNode()); // Should be C node
+console.log(stack.peekNode()); // Should be C node
 console.log("---------------------------");
 
 // Test removeTopNode
@@ -89,7 +89,7 @@ console.log("Test removeTopNode");
 resetNodes();
 stack = new Stack(a, b, c);
 stack.dump();
-console.log(stack.removeTopNode()); // Should be C node
+console.log(stack.popNode()); // Should be C node
 stack.dump();
 console.log("---------------------------");
 

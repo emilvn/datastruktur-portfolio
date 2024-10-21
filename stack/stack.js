@@ -5,11 +5,11 @@ export default class Stack {
    */
   constructor(...nodes) {
     if (nodes.length > 0) {
-      this.head = nodes[0];
+      this.tail = nodes[0];
       for (let i = 1; i < nodes.length; i++) {
         const current = nodes[i];
-        current.next = this.head;
-        this.head = current;
+        current.prev = this.tail;
+        this.tail = current;
       }
     }
     this._size = nodes.length;
@@ -20,14 +20,14 @@ export default class Stack {
    * @returns {Iterator} iterator
    */
   [Symbol.iterator]() {
-    let current = this.head;
+    let current = this.tail;
     return {
       next() {
         if (!current) {
           return { done: true };
         }
         const data = current.data;
-        current = current.next;
+        current = current.prev;
         return { value: data, done: false };
       },
     };
@@ -39,13 +39,13 @@ export default class Stack {
    * @returns {unknown | undefined} data at index in stack or undefined if not found
    */
   get(index) {
-    let node = this.head;
+    let node = this.tail;
     let i = 0;
     while (node) {
       if (i === index) {
         return node.data;
       }
-      node = node.next;
+      node = node.prev;
       i++;
     }
     return undefined;
@@ -55,34 +55,34 @@ export default class Stack {
    * Adds data to the top of the stack
    * @param {any} data data to push to the stack
    */
-  add(data) {
+  push(data) {
     const node = new Node(data);
-    this.addNode(node);
+    this.pushNode(node);
   }
 
   /**
    * Gets data at the top of the stack without removing it
    * @returns {unknown | undefined} data from top of the stack
    */
-  getTop() {
-    return this.head?.data;
+  peek() {
+    return this.tail?.data;
   }
 
   /**
    * Removes and returns data from the top of the stack
    * @returns {unknown | undefined} data from the removed top of the stack
    */
-  removeTop() {
-    return this.removeTopNode()?.data;
+  pop() {
+    return this.popNode()?.data;
   }
 
   /**
    * Adds node to top of the stack
    * @param {Node} node
    */
-  addNode(node) {
-    node.next = this.head;
-    this.head = node;
+  pushNode(node) {
+    node.prev = this.tail;
+    this.tail = node;
     this._size++;
   }
 
@@ -90,18 +90,18 @@ export default class Stack {
    * Gets node at top of the stack, without removing it
    * @returns {Node | null} node at the top of the stack
    */
-  getTopNode() {
-    return this.head;
+  peekNode() {
+    return this.tail;
   }
 
   /**
    * Removes and returns node at top of the stack
    * @returns {Node | null} the removed top node
    */
-  removeTopNode() {
-    if (!this.head) return null;
-    const node = this.head;
-    this.head = this.head.next;
+  popNode() {
+    if (!this.tail) return null;
+    const node = this.tail;
+    this.tail = this.tail.prev;
     this._size--;
     return node;
   }
@@ -118,7 +118,7 @@ export default class Stack {
    * Clears stack
    */
   clear() {
-    this.head = null;
+    this.tail = null;
     this._size = 0;
   }
 
@@ -126,22 +126,22 @@ export default class Stack {
    * Prints stack to console, primarily for debugging
    */
   dump() {
-    let node = this.head;
+    let node = this.tail;
     let output = node?.data;
     while (node) {
-      if (node !== this.head) {
+      if (node !== this.tail) {
         output += " <- " + node.data;
       }
-      node = node.next;
+      node = node.prev;
     }
-    console.log("Top: " + this.head?.data);
+    console.log("Top: " + this.tail?.data);
     console.log("Stack: " + output);
   }
 }
 
 class Node {
   data;
-  next = null;
+  prev = null;
   constructor(data) {
     this.data = data;
   }
