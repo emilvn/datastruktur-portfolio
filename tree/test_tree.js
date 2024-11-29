@@ -88,7 +88,6 @@ const allValues = [
   "Z",
 ];
 
-// Test bfsIterate
 function test_bfsIterate() {
   const tmpTree = makeTree();
   const foundValues = [];
@@ -118,7 +117,6 @@ function test_bfsIterate() {
   return foundAllValues && noDuplicates;
 }
 
-// Test dfsIterate
 function test_dfsIterate() {
   const tmpTree = makeTree();
   const foundValues = [];
@@ -148,7 +146,6 @@ function test_dfsIterate() {
   return true;
 }
 
-// Test layerCount
 function test_layerCount() {
   const tmpTree = makeTree();
   const count = tmpTree.layerCount;
@@ -163,7 +160,6 @@ function test_layerCount() {
   return true;
 }
 
-// Test addValue
 function test_addValue() {
   const tmpTree = makeTree();
   tmpTree.addValue("1");
@@ -179,7 +175,6 @@ function test_addValue() {
   return true;
 }
 
-// Test findValue
 function test_findValue() {
   const tmpTree = makeTree();
   const found = tmpTree.findValue("X");
@@ -194,7 +189,6 @@ function test_findValue() {
   return true;
 }
 
-// Test removeValue
 function test_removeValue() {
   const tmpTree = makeTree();
   tmpTree.removeValue("X");
@@ -210,15 +204,12 @@ function test_removeValue() {
   return true;
 }
 
-// Test toString/dump
-// visual inspection required
 function test_dump() {
   let tmpTree = makeTree();
   tmpTree.dump();
   return true;
 }
 
-// Run tests
 const tests = [
   test_dump,
   test_bfsIterate,
@@ -229,4 +220,5 @@ const tests = [
   test_removeValue,
 ];
 
+console.log("Running Tree tests...");
 runTests(tests);

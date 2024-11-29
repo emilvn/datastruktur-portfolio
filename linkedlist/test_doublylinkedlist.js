@@ -1,199 +1,348 @@
-import DoublyLinkedList from "./doublylinkedlist.js";
+import { logError, logSuccess } from "../test_helpers/log.js";
+import { runTests } from "../test_helpers/test.js";
+import DoublyLinkedList, { Node } from "./doublylinkedlist.js";
 
-class Node {
-    prev = null;
-    next = null;
-    data;
+function makeList() {
+  const a = new Node("A");
+  const b = new Node("B");
+  const c = new Node("C");
 
-    constructor(data) {
-        this.data = data;
-    }
+  const list = new DoublyLinkedList(a, b, c);
+  return list;
 }
 
+function test_addFirst() {
+  const list = makeList();
+  list.addFirst("D");
+  const data = list.get(0);
+  if (data !== "D") {
+    logError("FAILED: addFirst");
+    logError("\tfailed to add data to first index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-
-let a = new Node("A");
-let b = new Node("B");
-let c = new Node("C");
-let d = new Node("D");
-
-function resetNodes() {
-    a = new Node("A");
-    b = new Node("B");
-    c = new Node("C");
-    d = new Node("D");
+  logSuccess("PASSED: addFirst");
+  return true;
 }
 
-let list = new DoublyLinkedList(a, b, c);
+function test_addLast() {
+  const list = makeList();
+  list.addLast("D");
+  const data = list.get(3);
+  if (data !== "D") {
+    logError("FAILED: addLast");
+    logError("\tfailed to add data to last index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test addFirst
-console.log("Test addFirst");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.addFirst("D")
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: addLast");
+  return true;
+}
 
-// Test addLast
-console.log("Test addLast");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.addLast("D")
-list.dumpList();
-console.log("---------------------------");
+function test_get() {
+  const list = makeList();
+  const data = list.get(1);
+  if (data !== "B") {
+    logError("FAILED: get");
+    logError("\tfailed to get data at index 1");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test get
-console.log("Test get");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-console.log(list.get(0)) // should be 'A'
-console.log(list.get(1)) // should be 'B'
-console.log(list.get(2)) // should be 'C'
-console.log(list.get(3)) // should be undefined (node is null)
-console.log("---------------------------");
+  logSuccess("PASSED: get");
+  return true;
+}
 
-// Test indexOf
-console.log("Test indexOf");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-console.log(list.indexOf("A")); // should be 0
-console.log(list.indexOf("B")); // should be 1
-console.log(list.indexOf("C")); // should be 2
-console.log(list.indexOf("D")); // should be -1
-console.log("---------------------------");
+function test_indexOf() {
+  const list = makeList();
+  const index = list.indexOf("B");
+  if (index !== 1) {
+    logError("FAILED: indexOf");
+    logError("\tfailed to find index of data");
+    logError("\tExpected: 1");
+    logError("\tFound: " + index);
+    return false;
+  }
 
-// Test insertAfter
-console.log("Test insertAfter");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.insertAfter(2, "D");
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: indexOf");
+  return true;
+}
 
-// Test insertBefore
-console.log("Test insertBefore");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.insertBefore(0, "D");
-list.dumpList();
-console.log("---------------------------");
+function test_insertAfter() {
+  const list = makeList();
+  list.insertAfter(1, "D");
+  const data = list.get(2);
+  if (data !== "D") {
+    logError("FAILED: insertAfter");
+    logError("\tfailed to insert data after index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test Remove
-console.log("Test remove");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.remove("C");
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: insertAfter");
+  return true;
+}
 
-// Test Remove index
-console.log("Test removeIndex");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.removeIndex(2);
-list.dumpList();
-console.log("---------------------------");
+function test_insertBefore() {
+  const list = makeList();
+  list.insertBefore(1, "D");
+  const data = list.get(1);
+  if (data !== "D") {
+    logError("FAILED: insertBefore");
+    logError("\tfailed to insert data before index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test Remove first
-console.log("Test removeFirst");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.removeFirst();
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: insertBefore");
+  return true;
+}
 
-// Test Remove last
-console.log("Test removeLast");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.removeLast();
-list.dumpList();
-console.log("---------------------------");
+function test_remove() {
+  const list = makeList();
+  list.remove("B");
+  const data = list.get(1);
+  if (data !== "C") {
+    logError("FAILED: remove");
+    logError("\tfailed to remove data");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test addNodeFirst
-console.log("Test addNodeFirst");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.addNodeFirst(d)
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: remove");
+  return true;
+}
 
-// Test addNodeLast
-console.log("Test addNodeLast");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.addNodeLast(d)
-list.dumpList();
-console.log("---------------------------");
+function test_removeIndex() {
+  const list = makeList();
+  list.removeIndex(1);
+  const data = list.get(1);
+  if (data !== "C") {
+    logError("FAILED: removeIndex");
+    logError("\tfailed to remove data at index");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test insertAfterNode
-console.log("Test insertAfterNode");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.insertAfterNode(d, b);
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: removeIndex");
+  return true;
+}
 
-// Test insertBeforeNode
-console.log("Test insertBeforeNode");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.insertBeforeNode(d, a);
-list.dumpList();
-console.log("---------------------------");
+function test_removeFirst() {
+  const list = makeList();
+  list.removeFirst();
+  const data = list.get(0);
+  if (data !== "B") {
+    logError("FAILED: removeFirst");
+    logError("\tfailed to remove first node");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test removeNode
-console.log("Test removeNode");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.removeNode(b);
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: removeFirst");
+  return true;
+}
 
-// Test nodeAt
-console.log("Test nodeAt");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-console.log(list.nodeAt(0)?.data); // should be "A"
-console.log(list.nodeAt(1)?.data); // should be "B"
-console.log(list.nodeAt(2)?.data); // should be "C"
-console.log(list.nodeAt(3)?.data); // should be "undefined"
-console.log("---------------------------");
+function test_removeLast() {
+  const list = makeList();
+  list.removeLast();
+  const data = list.get(2);
+  if (data !== undefined) {
+    logError("FAILED: removeLast");
+    logError("\tfailed to remove last node");
+    logError("\tExpected: undefined");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test swapNodes
-console.log("Test swapNodes");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.swapNodes(a, c);
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: removeLast");
+  return true;
+}
 
-// Test clear
-console.log("Test clear");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-list.dumpList();
-list.clear();
-list.dumpList();
-console.log("---------------------------");
+function test_addNodeFirst() {
+  const list = makeList();
+  const d = new Node("D");
+  list.addNodeFirst(d);
+  const data = list.get(0);
+  if (data !== "D") {
+    logError("FAILED: addNodeFirst");
+    logError("\tfailed to add node to first index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test size
-console.log("Test size");
-resetNodes();
-list = new DoublyLinkedList(a, b, c);
-console.log(list.size()) // should be 3
-console.log("---------------------------");
+  logSuccess("PASSED: addNodeFirst");
+  return true;
+}
+
+function test_addNodeLast() {
+  const list = makeList();
+  const d = new Node("D");
+  list.addNodeLast(d);
+  const data = list.get(3);
+  if (data !== "D") {
+    logError("FAILED: addNodeLast");
+    logError("\tfailed to add node to last index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: addNodeLast");
+  return true;
+}
+
+function test_insertAfterNode() {
+  const list = makeList();
+  const d = new Node("D");
+  list.insertAfterNode(d, list.head);
+  const data = list.get(1);
+  if (data !== "D") {
+    logError("FAILED: insertAfterNode");
+    logError("\tfailed to insert node after node");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: insertAfterNode");
+  return true;
+}
+
+function test_insertBeforeNode() {
+  const list = makeList();
+  const d = new Node("D");
+  list.insertBeforeNode(d, list.head.next);
+  const data = list.get(1);
+  if (data !== "D") {
+    logError("FAILED: insertBeforeNode");
+    logError("\tfailed to insert node before node");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: insertBeforeNode");
+  return true;
+}
+
+function test_removeNode() {
+  const list = makeList();
+  list.removeNode(list.head.next);
+  const data = list.get(1);
+  if (data !== "C") {
+    logError("FAILED: removeNode");
+    logError("\tfailed to remove node");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: removeNode");
+  return true;
+}
+
+function test_nodeAt() {
+  const list = makeList();
+  const data = list.nodeAt(1)?.data;
+  if (data !== "B") {
+    logError("FAILED: nodeAt");
+    logError("\tfailed to get node at index");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: nodeAt");
+  return true;
+}
+
+function test_swapNodes() {
+  const list = makeList();
+  list.swapNodes(list.head, list.tail);
+  const data = list.get(0);
+  if (data !== "C") {
+    logError("FAILED: swapNodes");
+    logError("\tfailed to swap nodes");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: swapNodes");
+  return true;
+}
+
+function test_clear() {
+  const list = makeList();
+  list.clear();
+  const size = list.size();
+  if (size !== 0) {
+    logError("FAILED: clear");
+    logError("\tfailed to clear list");
+    logError("\tExpected: 0");
+    logError("\tFound: " + size);
+    return false;
+  }
+
+  logSuccess("PASSED: clear");
+  return true;
+}
+
+function test_size() {
+  const list = makeList();
+  const size = list.size();
+  if (size !== 3) {
+    logError("FAILED: size");
+    logError("\tfailed to get size of list");
+    logError("\tExpected: 3");
+    logError("\tFound: " + size);
+    return false;
+  }
+
+  logSuccess("PASSED: size");
+  return true;
+}
+
+function test_dumpList() {
+  const list = makeList();
+  list.dumpList();
+  return true;
+}
+
+const tests = [
+  test_dumpList,
+  test_addFirst,
+  test_addLast,
+  test_get,
+  test_indexOf,
+  test_insertAfter,
+  test_insertBefore,
+  test_remove,
+  test_removeIndex,
+  test_removeFirst,
+  test_removeLast,
+  test_addNodeFirst,
+  test_addNodeLast,
+  test_insertAfterNode,
+  test_insertBeforeNode,
+  test_removeNode,
+  test_nodeAt,
+  test_swapNodes,
+  test_clear,
+  test_size,
+];
+
+console.log("Running DoublyLinkedList tests...");
+runTests(tests);

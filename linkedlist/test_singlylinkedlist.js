@@ -1,129 +1,239 @@
-import SinglyLinkedList from "./singlylinkedlist.js";
+import { logError, logSuccess } from "../test_helpers/log.js";
+import { runTests } from "../test_helpers/test.js";
+import SinglyLinkedList, { Node } from "./singlylinkedlist.js";
 
-class Node {
-    next = null;
-    data;
+function makeList() {
+  const a = new Node("A");
+  const b = new Node("B");
+  const c = new Node("C");
 
-    constructor(data) {
-        this.data = data;
-    }
+  const list = new SinglyLinkedList(a, b, c);
+  return list;
 }
 
+function test_add() {
+  const list = makeList();
+  list.add("D");
+  const data = list.getNodeWith("D");
+  if (!data) {
+    logError("FAILED: add");
+    logError("\tfailed to add data to last index");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-
-let a = new Node("A");
-let b = new Node("B");
-let c = new Node("C");
-let d = new Node("D");
-
-function resetNodes() {
-    a = new Node("A");
-    b = new Node("B");
-    c = new Node("C");
-    d = new Node("D");
+  logSuccess("PASSED: add");
+  return true;
 }
 
-let list = new SinglyLinkedList(a, b, c);
+function test_remove() {
+  const list = makeList();
+  list.remove("C");
+  const data = list.getNodeWith("C");
+  if (data) {
+    logError("FAILED: remove");
+    logError("\tfailed to remove data");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test add
-console.log("Test add");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.add("D")
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: remove");
+  return true;
+}
 
-// Test Remove
-console.log("Test remove");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.remove("C");
-list.dumpList();
-console.log("---------------------------");
+function test_getFirst() {
+  const list = makeList();
+  const data = list.getFirst();
+  if (data !== "A") {
+    logError("FAILED: getFirst");
+    logError("\tfailed to get first data");
+    logError("\tExpected: A");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test getFirst
-console.log("Test getFirst");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getFirst()) // Should be 'A'
-console.log("---------------------------");
+  logSuccess("PASSED: getFirst");
+  return true;
+}
 
-// Test getLast
-console.log("Test getLast");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getLast()) // Should be 'C'
-console.log("---------------------------");
+function test_getLast() {
+  const list = makeList();
+  const data = list.getLast();
+  if (data !== "C") {
+    logError("FAILED: getLast");
+    logError("\tfailed to get last data");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test getFirstNode
-console.log("Test getFirstNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getFirstNode()) // Should be A node
-console.log("---------------------------");
+  logSuccess("PASSED: getLast");
+  return true;
+}
 
-// Test getNextNode
-console.log("Test getNextNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getNextNode(a)) // Should be B node
-console.log("---------------------------");
+function test_getFirstNode() {
+  const list = makeList();
+  const data = list.getFirstNode();
+  if (data.data !== "A") {
+    logError("FAILED: getFirstNode");
+    logError("\tfailed to get first node");
+    logError("\tExpected: A");
+    logError("\tFound: " + data.data);
+    return false;
+  }
 
-// Test getLastNode
-console.log("Test getLastNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getLastNode()) // Should be C node
-console.log("---------------------------");
+  logSuccess("PASSED: getFirstNode");
+  return true;
+}
 
-// Test getNodeWith
-console.log("Test getNodeWith");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.getNodeWith("A")); //  should be A node
-console.log("---------------------------");
+function test_getNextNode() {
+  const list = makeList();
+  const data = list.getNextNode(list.getFirstNode());
+  if (data.data !== "B") {
+    logError("FAILED: getNextNode");
+    logError("\tfailed to get next node");
+    logError("\tExpected: B");
+    logError("\tFound: " + data.data);
+    return false;
+  }
 
-// Test removeFirstNode
-console.log("Test removeFirstNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.removeFirstNode();
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: getNextNode");
+  return true;
+}
 
-// Test removeLastNode
-console.log("Test removeLastNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.removeLastNode(b);
-list.dumpList();
-console.log("---------------------------");
+function test_getLastNode() {
+  const list = makeList();
+  const data = list.getLastNode();
+  if (data.data !== "C") {
+    logError("FAILED: getLastNode");
+    logError("\tfailed to get last node");
+    logError("\tExpected: C");
+    logError("\tFound: " + data.data);
+    return false;
+  }
 
-// Test removeNode
-console.log("Test removeNode");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.removeNode(b);
-list.dumpList();
-console.log("---------------------------");
+  logSuccess("PASSED: getLastNode");
+  return true;
+}
 
-// Test clear
-console.log("Test clear");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-list.dumpList();
-list.clear();
-list.dumpList();
-console.log("---------------------------");
+function test_getNodeWith() {
+  const list = makeList();
+  const data = list.getNodeWith("B");
+  if (data.data !== "B") {
+    logError("FAILED: getNodeWith");
+    logError("\tfailed to get node with data");
+    logError("\tExpected: B");
+    logError("\tFound: " + data.data);
+    return false;
+  }
 
-// Test size
-console.log("Test size");
-resetNodes();
-list = new SinglyLinkedList(a, b, c);
-console.log(list.size()) // should be 3
-console.log("---------------------------");
+  logSuccess("PASSED: getNodeWith");
+  return true;
+}
+
+function test_removeFirstNode() {
+  const list = makeList();
+  list.removeFirstNode();
+  const data = list.getFirst();
+  if (data !== "B") {
+    logError("FAILED: removeFirstNode");
+    logError("\tfailed to remove first node");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: removeFirstNode");
+  return true;
+}
+
+function test_removeLastNode() {
+  const list = makeList();
+  list.removeLastNode();
+  const data = list.getLast();
+  if (data !== "B") {
+    logError("FAILED: removeLastNode");
+    logError("\tfailed to remove last node");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: removeLastNode");
+  return true;
+}
+
+function test_removeNode() {
+  const list = makeList();
+  list.removeNode(list.getNodeWith("B"));
+  const data = list.getNodeWith("B");
+  if (data) {
+    logError("FAILED: removeNode");
+    logError("\tfailed to remove node");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
+
+  logSuccess("PASSED: removeNode");
+  return true;
+}
+
+function test_clear() {
+  const list = makeList();
+  list.clear();
+  const size = list.size();
+  if (size !== 0) {
+    logError("FAILED: clear");
+    logError("\tfailed to clear list");
+    logError("\tExpected: 0");
+    logError("\tFound: " + size);
+    return false;
+  }
+
+  logSuccess("PASSED: clear");
+  return true;
+}
+
+function test_size() {
+  const list = makeList();
+  const size = list.size();
+  if (size !== 3) {
+    logError("FAILED: size");
+    logError("\tfailed to get size");
+    logError("\tExpected: 3");
+    logError("\tFound: " + size);
+    return false;
+  }
+
+  logSuccess("PASSED: size");
+  return true;
+}
+
+function test_dumpList() {
+  const list = makeList();
+  list.dumpList();
+  return true;
+}
+
+const tests = [
+  test_dumpList,
+  test_size,
+  test_clear,
+  test_removeNode,
+  test_removeLastNode,
+  test_removeFirstNode,
+  test_getNodeWith,
+  test_getLastNode,
+  test_getNextNode,
+  test_getFirstNode,
+  test_getLast,
+  test_getFirst,
+  test_remove,
+  test_add,
+];
+
+console.log("Running SinglyLinkedList tests...");
+runTests(tests);
