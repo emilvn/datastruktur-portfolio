@@ -1,101 +1,185 @@
-import Stack from "./stack.js";
+import { logError, logSuccess } from "../test_helpers/log.js";
+import { runTests } from "../test_helpers/test.js";
+import Stack, { Node } from "./stack.js";
 
-class Node {
-  prev = null;
-  data;
+function makeStack() {
+  const a = new Node("A");
+  const b = new Node("B");
+  const c = new Node("C");
 
-  constructor(data) {
-    this.data = data;
+  const stack = new Stack(a, b, c);
+  return stack;
+}
+
+function test_Iterator() {
+  const stack = makeStack();
+  const allValues = ["A", "B", "C"];
+  const foundValues = [];
+  for (const data of stack) {
+    foundValues.push(data);
   }
+  const foundAllValues = allValues.every((v) => foundValues.includes(v));
+  if (!foundAllValues) {
+    logError("FAILED: Iterator");
+    logError("\tFailed to find all values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
+  }
+  const noDuplicates =
+    foundValues.length === allValues.length && foundAllValues;
+  if (!noDuplicates) {
+    logError("FAILED: Iterator");
+    logError("\tFound duplicate values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
+  }
+
+  logSuccess("PASSED: Iterator");
+  return true;
 }
 
-let a = new Node("A");
-let b = new Node("B");
-let c = new Node("C");
-let d = new Node("D");
+function test_get() {
+  const stack = makeStack();
+  const data = stack.get(1);
+  if (data !== "B") {
+    logError("FAILED: get");
+    logError("\tfailed to get data at index 1");
+    logError("\tExpected: B");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-function resetNodes() {
-  a = new Node("A");
-  b = new Node("B");
-  c = new Node("C");
-  d = new Node("D");
+  logSuccess("PASSED: get");
+  return true;
 }
 
-let stack = new Stack(a, b, c);
+function test_push() {
+  const stack = makeStack();
+  stack.push("D");
+  const data = stack.peek();
+  if (data !== "D") {
+    logError("FAILED: push");
+    logError("\tfailed to push data to stack:");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test iterator
-console.log("Test iterator");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-for (const d of stack) {
-  console.log(d);
+  logSuccess("PASSED: push");
+  return true;
 }
-console.log("---------------------------");
 
-// Test get(index)
-console.log("Test get");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-console.log(stack.get(1)); // Should be 'B'
-console.log("---------------------------");
+function test_peek() {
+  const stack = makeStack();
+  const data = stack.peek();
+  if (data !== "C") {
+    logError("FAILED: peek");
+    logError("\tfailed to peek top of stack:");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test add(data)
-console.log("Test add");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-stack.push("D");
-stack.dump();
-console.log("---------------------------");
+  logSuccess("PASSED: peek");
+  return true;
+}
 
-// Test getTop
-console.log("Test getTop");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-console.log(stack.peek()); // Should be 'C'
-console.log("---------------------------");
+function test_pop() {
+  const stack = makeStack();
+  const data = stack.pop();
+  if (data !== "C") {
+    logError("FAILED: pop");
+    logError("\tfailed to pop top of stack:");
+    logError("\tExpected: C");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test removeTop
-console.log("Test removeTop");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-console.log(stack.pop()); // Should be 'C'
-stack.dump();
-console.log("---------------------------");
+  logSuccess("PASSED: pop");
+  return true;
+}
 
-// Test addNode
-console.log("Test addNode");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-stack.pushNode(d);
-stack.dump();
-console.log("---------------------------");
+function test_pushNode() {
+  const stack = makeStack();
+  const d = new Node("D");
+  stack.pushNode(d);
+  const data = stack.peek();
+  if (data !== "D") {
+    logError("FAILED: pushNode");
+    logError("\tfailed to push node to stack:");
+    logError("\tExpected: D");
+    logError("\tFound: " + data);
+    return false;
+  }
 
-// Test getTopNode
-console.log("Test getTopNode");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-console.log(stack.peekNode()); // Should be C node
-console.log("---------------------------");
+  logSuccess("PASSED: pushNode");
+  return true;
+}
 
-// Test removeTopNode
-console.log("Test removeTopNode");
-resetNodes();
-stack = new Stack(a, b, c);
-stack.dump();
-console.log(stack.popNode()); // Should be C node
-stack.dump();
-console.log("---------------------------");
+function test_peekNode() {
+  const stack = makeStack();
+  const node = stack.peekNode();
+  if (node.data !== "C") {
+    logError("FAILED: peekNode");
+    logError("\tfailed to peek top of stack:");
+    logError("\tExpected: C");
+    logError("\tFound: " + node.data);
+    return false;
+  }
 
-// Test size
-console.log("Test size");
-resetNodes();
-stack = new Stack(a, b, c);
-console.log(stack.size()); // Should be 3
-console.log("---------------------------");
+  logSuccess("PASSED: peekNode");
+  return true;
+}
+
+function test_popNode() {
+  const stack = makeStack();
+  const node = stack.popNode();
+  if (node.data !== "C") {
+    logError("FAILED: popNode");
+    logError("\tfailed to pop top of stack:");
+    logError("\tExpected: C");
+    logError("\tFound: " + node.data);
+    return false;
+  }
+
+  logSuccess("PASSED: popNode");
+  return true;
+}
+
+function test_size() {
+  const stack = makeStack();
+  const size = stack.size();
+  if (size !== 3) {
+    logError("FAILED: size");
+    logError("\tfailed to get correct size:");
+    logError("\tExpected: 3");
+    logError("\tFound: " + size);
+    return false;
+  }
+
+  logSuccess("PASSED: size");
+  return true;
+}
+
+function test_dump() {
+  const stack = makeStack();
+  stack.dump();
+  return true;
+}
+
+const tests = [
+  test_dump,
+  test_Iterator,
+  test_get,
+  test_push,
+  test_peek,
+  test_pop,
+  test_pushNode,
+  test_peekNode,
+  test_popNode,
+  test_size,
+];
+
+runTests(tests);

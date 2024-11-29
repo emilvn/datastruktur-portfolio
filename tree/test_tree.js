@@ -1,4 +1,5 @@
 import { logError, logSuccess } from "../test_helpers/log.js";
+import { runTests } from "../test_helpers/test.js";
 import Tree, { TreeNode } from "./tree.js";
 
 function makeTree() {
@@ -98,17 +99,22 @@ function test_bfsIterate() {
     foundValues.includes(value)
   );
   if (!foundAllValues) {
-    logError("bfsIterate failed to find all values");
-    logError("Expected: " + allValues);
-    logError("Found: " + foundValues);
+    logError("FAILED: bfsIterate");
+    logError("\tfailed to find all values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
   }
-  const noDuplicates = foundValues.length === allValues.length;
+  const noDuplicates =
+    foundValues.length === allValues.length && foundAllValues;
   if (!noDuplicates) {
-    logError("bfsIterate found duplicate values");
-    logError("Expected: " + allValues);
-    logError("Found: " + foundValues);
+    logError("FAILED: bfsIterate");
+    logError("\tfound duplicate values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
   }
-
+  logSuccess("PASSED: bfsIterate");
   return foundAllValues && noDuplicates;
 }
 
@@ -123,18 +129,23 @@ function test_dfsIterate() {
     foundValues.includes(value)
   );
   if (!foundAllValues) {
-    logError("dfsIterate failed to find all values");
-    logError("Expected: " + allValues);
-    logError("Found: " + foundValues);
+    logError("FAILED: dfsIterate");
+    logError("\tfailed to find all values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
   }
   const noDuplicates = foundValues.length === allValues.length;
   if (!noDuplicates) {
-    logError("dfsIterate found duplicate values");
-    logError("Expected: " + allValues);
-    logError("Found: " + foundValues);
+    logError("FAILED: dfsIterate");
+    logError("\tfound duplicate values:");
+    logError("\tExpected: " + allValues);
+    logError("\tFound: " + foundValues);
+    return false;
   }
 
-  return foundAllValues && noDuplicates;
+  logSuccess("PASSED: dfsIterate");
+  return true;
 }
 
 // Test layerCount
@@ -142,11 +153,14 @@ function test_layerCount() {
   const tmpTree = makeTree();
   const count = tmpTree.layerCount;
   if (count !== 4) {
-    logError("layerCount failed to count layers");
-    logError("Expected: 4");
-    logError("Found: " + count);
+    logError("FAILED: layerCount");
+    logError("\tfailed to count layers:");
+    logError("\tExpected: 4");
+    logError("\tFound: " + count);
+    return false;
   }
-  return count === 4;
+  logSuccess("PASSED: layerCount");
+  return true;
 }
 
 // Test addValue
@@ -155,11 +169,14 @@ function test_addValue() {
   tmpTree.addValue("1");
   const found = tmpTree.findValue("1");
   if (!found || found.value !== "1") {
-    logError("addValue failed to add value");
-    logError("Expected: 1");
-    logError("Found: " + found.value);
+    logError("FAILED: addValue");
+    logError("\tfailed to add value:");
+    logError("\tExpected: 1");
+    logError("\tFound: " + found.value);
+    return false;
   }
-  return found;
+  logSuccess("PASSED: addValue");
+  return true;
 }
 
 // Test findValue
@@ -167,11 +184,14 @@ function test_findValue() {
   const tmpTree = makeTree();
   const found = tmpTree.findValue("X");
   if (!found || found.value !== "X") {
-    logError("findValue failed to find value");
-    logError("Expected: X");
-    logError("Found: " + found.value);
+    logError("FAILED: findValue");
+    logError("\tfailed to find value:");
+    logError("\tExpected: X");
+    logError("\tFound: " + found.value);
+    return false;
   }
-  return found;
+  logSuccess("PASSED: findValue");
+  return true;
 }
 
 // Test removeValue
@@ -180,11 +200,14 @@ function test_removeValue() {
   tmpTree.removeValue("X");
   const found = tmpTree.findValue("X");
   if (found) {
-    logError("removeValue failed to remove value");
-    logError("Expected: null");
-    logError("Found: " + found.value);
+    logError("FAILED: removeValue");
+    logError("\tfailed to remove value:");
+    logError("\tExpected: null");
+    logError("\tFound: " + found.value);
+    return false;
   }
-  return !found;
+  logSuccess("PASSED: removeValue");
+  return true;
 }
 
 // Test toString/dump
@@ -197,19 +220,13 @@ function test_dump() {
 
 // Run tests
 const tests = [
+  test_dump,
   test_bfsIterate,
   test_dfsIterate,
   test_layerCount,
   test_addValue,
   test_findValue,
   test_removeValue,
-  test_dump,
 ];
-const results = tests.map((test) => test());
-const passed = results.every((result) => result);
-if (passed) {
-  logSuccess("All tests passed!");
-} else {
-  const failed = results.filter((result) => !result);
-  logError(`${failed.length} tests failed`);
-}
+
+runTests(tests);
