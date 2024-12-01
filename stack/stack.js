@@ -139,7 +139,7 @@ export default class Stack {
   }
 }
 
-class Node {
+export class Node {
   data;
   prev = null;
   constructor(data) {

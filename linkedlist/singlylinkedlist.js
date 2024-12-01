@@ -217,7 +217,7 @@ export default class SinglyLinkedList {
 /**
  * Class for SinglyLinkedList nodes
  */
-class Node {
+export class Node {
   next = null;
   data;
 

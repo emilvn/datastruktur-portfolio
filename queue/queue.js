@@ -1,4 +1,4 @@
-export class Queue {
+export default class Queue {
   head = null;
   tail = null;
   _size = 0;
@@ -152,7 +152,7 @@ export class Queue {
   }
 }
 
-class Node {
+export class Node {
   data;
   next = null;
   constructor(data) {
