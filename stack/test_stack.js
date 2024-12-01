@@ -182,4 +182,6 @@ const tests = [
   test_size,
 ];
 
+console.log("Running Stack tests...");
+
 runTests(tests);
