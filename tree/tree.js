@@ -9,7 +9,7 @@ export default class Tree {
   }
 
   /**
-   * Iterates over the tree using breadth first search
+   * Iterates over the tree using breadth first scan
    * @param {Tree} tree tree to iterate over
    * @param {(current: TreeNode, stack: Stack, depth: number) => void} cb callback function to call on each node
    */
@@ -30,7 +30,7 @@ export default class Tree {
   }
 
   /**
-   * Iterates over the tree using depth first search
+   * Iterates over the tree using depth first scan
    * @param {Tree} tree tree to iterate over
    * @param {(current: TreeNode, stack: Stack, depth: number) => void} cb callback function to call on each node
    */
