@@ -1,13 +1,13 @@
 import BST, { BSTNode } from "./binarysearchtree.js";
 
 export default class AVLTree extends BST {
-  constructor(compatorFunction) {
-    super(compatorFunction);
+  constructor(comparatorFunction) {
+    super(comparatorFunction);
   }
 
   /**
    * Add a value to the tree
-   * @param {number} value value to add
+   * @param {any} value value to add
    */
   add(value) {
     const node = new AVLNode(value);

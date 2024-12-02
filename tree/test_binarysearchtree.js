@@ -148,6 +148,127 @@ function test_custom_comparator() {
   return true;
 }
 
+function test_first() {
+  const bst = makeBST();
+  const first = bst.first();
+  if (first !== 10) {
+    logError("FAILED: first");
+    logError("\tfailed to get first value in traversal order");
+    logError("\tExpected: 10");
+    logError("\tGot: " + first);
+    return false;
+  }
+
+  logSuccess("PASSED: first");
+  return true;
+}
+
+function test_last() {
+  const bst = makeBST();
+  const last = bst.last();
+  if (last !== 50) {
+    logError("FAILED: last");
+    logError("\tfailed to get first value in traversal order");
+    logError("\tExpected: 50");
+    logError("\tGot: " + last);
+    return false;
+  }
+
+  logSuccess("PASSED: last");
+  return true;
+}
+
+function test_getNextNode() {
+  const bst = makeBST();
+  const node = bst.getNextNode(bst.root);
+  if (node?.value !== 40) {
+    logError("FAILED: getNextNode");
+    logError("\tfailed to get next node");
+    logError("\tExpected: 40");
+    logError("\tGot: " + node?.value);
+    return false;
+  }
+
+  logSuccess("PASSED: getNextNode");
+  return true;
+}
+
+function test_find() {
+  const bst = makeBST();
+  const found = bst.find(20);
+  if (!found || found.value !== 20) {
+    logError("FAILED: find");
+    logError("\tfailed to find value in bst");
+    logError("\tExpected: 20");
+    logError("\tGot: " + found);
+    return false;
+  }
+
+  logSuccess("PASSED: find");
+  return true;
+}
+
+function test_getNext() {
+  const bst = makeBST();
+  const next = bst.getNext(30);
+  if (next !== 40) {
+    logError("FAILED: getNext");
+    logError("\tfailed to get next node");
+    logError("\tExpected: 40");
+    logError("\tGot: " + next?.value);
+    return false;
+  }
+
+  logSuccess("PASSED: getNext");
+  return true;
+}
+
+function test_remove() {
+  const bst = makeBST();
+  const size = bst.size;
+  bst.remove(30);
+  if (bst.size === size) {
+    logError("FAILED: remove");
+    logError("\tfailed to remove value from bst");
+    logError("\tExpected size: " + (size - 1));
+    logError("\tGot size: " + bst.size);
+    return false;
+  }
+
+  logSuccess("PASSED: remove");
+  return true;
+}
+
+function test_getPrevNode() {
+  const bst = makeBST();
+  const node = bst.getPreviousNode(bst.root);
+  if (node?.value !== 20) {
+    logError("FAILED: getPreviousNode");
+    logError("\tfailed to get previous node");
+    logError("\tExpected: 20");
+    logError("\tGot: " + node?.value);
+    return false;
+  }
+
+  logSuccess("PASSED: getPreviousNode");
+  return true;
+}
+
+function test_getPrev() {
+  const bst = makeBST();
+  const prev = bst.getPrevious(30);
+  if (prev !== 20) {
+    logError("FAILED: getPrevious");
+    logError("\tfailed to get previous node");
+    logError("\tExpected: 20");
+    logError("\tGot: " + prev);
+    return false;
+  }
+
+  logSuccess("PASSED: getPrevious");
+  return true;
+}
+
 function test_dump() {
   const bst = makeBST();
   const bstStr = makeBSTWithStrings();
@@ -163,6 +284,14 @@ const tests = [
   test_dfs,
   test_Iterator,
   test_custom_comparator,
+  test_first,
+  test_last,
+  test_getNextNode,
+  test_find,
+  test_getNext,
+  test_remove,
+  test_getPrevNode,
+  test_getPrev,
 ];
 
 console.log("Running BST tests...");

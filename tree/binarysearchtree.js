@@ -1,6 +1,12 @@
 import Stack from "../stack/stack.js";
 
 export default class BST {
+  /**
+   * Comparator function to use to compare nodes
+   * @param {any} a
+   * @param {any} b
+   * @returns {number} negative number if a < b positive if a > b or 0 if equal
+   */
   comparatorFunction = (a, b) => a - b;
   root = null;
   size = 0;
@@ -25,7 +31,7 @@ export default class BST {
   }
 
   /**
-   * Iterator for iterating through the tree in correct order using depth first scan
+   * Iterator for iterating through the tree in traversal order using depth first scan
    * Uses a generator function to iterate through the tree, yielding each value
    * @returns {Iterator} iterator
    */
@@ -64,6 +70,126 @@ export default class BST {
   }
 
   /**
+   * Gets value of first node in traversal-order
+   * @returns {any} value of first node
+   */
+  first() {
+    let current = this.root;
+    while (current.left) {
+      current = current.left;
+    }
+    return current.value;
+  }
+
+  /**
+   * Gets value of last node in traversal-order
+   * @returns {any} value of last node
+   */
+  last() {
+    let current = this.root;
+    while (current.right) {
+      current = current.right;
+    }
+    return current.value;
+  }
+
+  /**
+   * Finds the next node in traversal order after a node
+   * @param {BSTNode} node the node to find the next of
+   * @returns {BSTNode | null} the next node or null if not found
+   */
+  getNextNode(node) {
+    if (!node) {
+      return null;
+    }
+    // if node has a right child, the next node is the leftmost child of the nodes right child
+    if (node.right) {
+      let current = node.right;
+      while (current.left) {
+        current = current.left;
+      }
+      return current;
+    }
+    // if node has no right child, the next node is the first parent node that the node is a left child of
+    let current = node;
+    while (current.parent && current === current.parent.right) {
+      current = current.parent;
+    }
+    return current.parent;
+  }
+
+  /**
+   * Finds the next value in traversal order after a value
+   * @param {any} value the value to find the next of
+   * @returns {any | undefined} the next value or undefined if not found
+   */
+  getNext(value) {
+    const node = this.find(value);
+    if (!node) return;
+    const next = this.getNextNode(node);
+    return next?.value;
+  }
+
+  /**
+   * Finds node with specific value
+   * @param {any} value value to look for node with
+   * @returns {BSTNode | undefined} node with value or undefined if not found
+   */
+  find(value) {
+    let current = this.root;
+    while (current) {
+      const c = this.comparatorFunction(value, current.value);
+      if (c === 0) {
+        return current;
+      }
+      if (c > 0) {
+        current = current.right;
+      } else if (c < 0) {
+        current = current.left;
+      }
+    }
+    // not found
+    return;
+  }
+
+  /**
+   * Finds the previous node in traversal order before a node
+   * @param {BSTNode} node the node to find the previous of
+   * @returns {BSTNode | null} the previous node or null if not found
+   */
+  getPreviousNode(node) {
+    if (!node) {
+      return null;
+    }
+    // if node has a left child, the next node is the rightmost child of the nodes left child
+    if (node.left) {
+      let current = node.left;
+      while (current.right) {
+        current = current.right;
+      }
+      return current;
+    }
+    // if node has no left child, the next node is the first parent node that the node is a right child of
+    let current = node;
+    while (current.parent && current === current.parent.left) {
+      current = current.parent;
+    }
+    return current.parent;
+  }
+
+  /**
+   * Finds the previous value in traversal order before a value
+   * @param {any} value the value to find the previous of
+   * @returns {any | undefined} the previous value or undefined if not found
+   */
+  getPrevious(value) {
+    const node = this.find(value);
+    if (!node) return;
+    const previous = this.getPreviousNode(node);
+    return previous?.value;
+  }
+
+  /**
    * Adds a node to the tree
    * @param {BSTNode} node node to add
    */
@@ -75,13 +201,13 @@ export default class BST {
       return;
     }
     while (curr) {
-      if (this.comparatorFunction(node.value, curr.value) === 0) {
+      const c = this.comparatorFunction(node.value, curr.value);
+      if (c === 0) {
         return;
       }
-      if (this.comparatorFunction(node.value, curr.value) > 0) {
+      if (c > 0) {
         if (!curr.right) {
           this.size++;
-          node.parent = curr;
           curr.right = node;
           // if the root node has a parent node, a rebalance was made and the root is now the parent of previous root
           if (this.root.parent) {
@@ -91,10 +217,9 @@ export default class BST {
         } else {
           curr = curr.right;
         }
-      } else if (this.comparatorFunction(node.value, curr.value) < 0) {
+      } else if (c < 0) {
         if (!curr.left) {
           this.size++;
-          node.parent = curr;
           curr.left = node;
           // if the root node has a parent node, a rebalance was made and the root is now the parent of previous root
           if (this.root.parent) {
@@ -109,8 +234,36 @@ export default class BST {
   }
 
   /**
+   * Removes a value from the BST, without removing the child nodes of the removed node
+   * @param {any} value to remove
+   */
+  remove(value) {
+    const node = this.find(value);
+    if (!node) {
+      return;
+    }
+    const parent = node.parent;
+    // if the node has no parent, it is the root node
+    if (!parent) {
+      if (node.right) {
+        this.root = node.right;
+        this.root.left = node.left;
+      } else if (node.left) {
+        this.root = node.left;
+        this.root.right = node.right;
+      } else {
+        this.root = null;
+      }
+      this.size--;
+      return;
+    }
+    parent.removeChild(node);
+    this.size--;
+  }
+
+  /**
    * Adds a value to the tree
-   * @param {number} value value to add
+   * @param {any} value value to add
    */
   add(value) {
     const node = new BSTNode(value);
@@ -146,6 +299,9 @@ export class BSTNode {
    */
   set right(node) {
     this._right = node;
+    if (node) {
+      node.parent = this;
+    }
     this.maintain();
   }
   /**
@@ -154,6 +310,40 @@ export class BSTNode {
    */
   set left(node) {
     this._left = node;
+    if (node) {
+      node.parent = this;
+    }
+    this.maintain();
+  }
+
+  /**
+   * Removes child node while keeping the child nodes of the removed node
+   * @param {BSTNode} node node to remove
+   */
+  removeChild(node) {
+    if (this._left === node) {
+      // preserve the child nodes
+      if (node.right) {
+        this.left = node.right;
+        this.left.left = node.left;
+      } else if (node.left) {
+        this.left = node.left;
+        this.left.right = node.right;
+      } else {
+        this.left = null;
+      }
+    } else if (this._right === node) {
+      // preserve the child nodes
+      if (node.right) {
+        this.right = node.right;
+        this.right.left = node.left;
+      } else if (node.left) {
+        this.right = node.left;
+        this.right.right = node.right;
+      } else {
+        this.right = null;
+      }
+    }
     this.maintain();
   }
 
