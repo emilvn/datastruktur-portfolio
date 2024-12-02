@@ -277,7 +277,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_add,
   test_doesnt_add_existing,
@@ -294,5 +294,7 @@ const tests = [
   test_getPrev,
 ];
 
-console.log("Running BST tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running BST tests...");
+  runTests(tests);
+}

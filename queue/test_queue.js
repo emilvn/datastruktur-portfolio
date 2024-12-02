@@ -138,7 +138,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_Iterator,
   test_enqueue,
@@ -149,5 +149,7 @@ const tests = [
   test_get,
 ];
 
-console.log("Running Queue tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Queue tests...");
+  runTests(tests);
+}

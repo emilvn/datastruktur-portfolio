@@ -210,7 +210,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_bfsIterate,
   test_dfsIterate,
@@ -220,5 +220,7 @@ const tests = [
   test_removeValue,
 ];
 
-console.log("Running Tree tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Tree tests...");
+  runTests(tests);
+}

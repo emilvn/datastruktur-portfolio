@@ -169,7 +169,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_Iterator,
   test_get,
@@ -182,6 +182,7 @@ const tests = [
   test_size,
 ];
 
-console.log("Running Stack tests...");
-
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Stack tests...");
+  runTests(tests);
+}

@@ -218,7 +218,7 @@ function test_dumpList() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dumpList,
   test_size,
   test_clear,
@@ -235,5 +235,7 @@ const tests = [
   test_add,
 ];
 
-console.log("Running SinglyLinkedList tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running SinglyLinkedList tests...");
+  runTests(tests);
+}

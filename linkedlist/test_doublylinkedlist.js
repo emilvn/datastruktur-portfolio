@@ -321,7 +321,7 @@ function test_dumpList() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dumpList,
   test_addFirst,
   test_addLast,
@@ -344,5 +344,7 @@ const tests = [
   test_size,
 ];
 
-console.log("Running DoublyLinkedList tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running DoublyLinkedList tests...");
+  runTests(tests);
+}

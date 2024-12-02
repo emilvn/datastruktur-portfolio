@@ -225,7 +225,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_constructor,
   test_setAndGet,
@@ -237,5 +237,7 @@ const tests = [
   test_northSouthEastWest,
 ];
 
-console.log("Running Grid tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Grid tests...");
+  runTests(tests);
+}

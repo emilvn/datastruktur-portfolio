@@ -167,7 +167,7 @@ function test_Iterator() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_enqueue,
   test_dequeue,
   test_peek,
@@ -179,5 +179,7 @@ const tests = [
   test_Iterator,
 ];
 
-console.log("Running Circular Buffer tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Circular Buffer tests...");
+  runTests(tests);
+}

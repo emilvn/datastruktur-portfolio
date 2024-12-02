@@ -238,7 +238,7 @@ function test_dump() {
   return true;
 }
 
-const tests = [
+export const tests = [
   test_dump,
   test_rebalance,
   test_Iterator,
@@ -253,5 +253,7 @@ const tests = [
   test_getPrev,
 ];
 
-console.log("Running AVLTree tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running AVLTree tests...");
+  runTests(tests);
+}

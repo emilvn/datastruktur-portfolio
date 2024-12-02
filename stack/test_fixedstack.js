@@ -97,7 +97,9 @@ function test_get() {
   return true;
 }
 
-const tests = [test_push, test_pop, test_peek, test_size, test_get];
+export const tests = [test_push, test_pop, test_peek, test_size, test_get];
 
-console.log("Running Fixed Stack tests...");
-runTests(tests);
+if (import.meta.main) {
+  console.log("Running Fixed Stack tests...");
+  runTests(tests);
+}
