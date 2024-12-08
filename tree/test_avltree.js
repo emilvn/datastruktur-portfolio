@@ -268,7 +268,7 @@ export const tests = [
   test_getPrev,
 ];
 // change to true to run test file seperately
-if (true) {
+if (false) {
   console.log("Running AVLTree tests...");
   runTests(tests);
 }

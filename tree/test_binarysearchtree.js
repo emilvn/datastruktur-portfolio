@@ -311,7 +311,7 @@ export const tests = [
 ];
 
 // change to true to run test file seperately
-if (true) {
+if (false) {
   console.log("Running BST tests...");
   runTests(tests);
 }
