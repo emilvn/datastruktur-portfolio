@@ -294,7 +294,8 @@ export const tests = [
   test_getPrev,
 ];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running BST tests...");
   runTests(tests);
 }

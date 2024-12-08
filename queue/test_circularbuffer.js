@@ -179,7 +179,8 @@ export const tests = [
   test_Iterator,
 ];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running Circular Buffer tests...");
   runTests(tests);
 }

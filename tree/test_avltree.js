@@ -252,8 +252,8 @@ export const tests = [
   test_getPrevNode,
   test_getPrev,
 ];
-
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running AVLTree tests...");
   runTests(tests);
 }

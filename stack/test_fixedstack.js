@@ -99,7 +99,8 @@ function test_get() {
 
 export const tests = [test_push, test_pop, test_peek, test_size, test_get];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running Fixed Stack tests...");
   runTests(tests);
 }

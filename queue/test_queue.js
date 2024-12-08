@@ -149,7 +149,8 @@ export const tests = [
   test_get,
 ];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running Queue tests...");
   runTests(tests);
 }

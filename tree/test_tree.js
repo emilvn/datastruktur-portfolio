@@ -220,7 +220,8 @@ export const tests = [
   test_removeValue,
 ];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running Tree tests...");
   runTests(tests);
 }

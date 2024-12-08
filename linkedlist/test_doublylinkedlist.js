@@ -344,7 +344,8 @@ export const tests = [
   test_size,
 ];
 
-if (import.meta.main) {
+// change to true to run test file seperately
+if (false) {
   console.log("Running DoublyLinkedList tests...");
   runTests(tests);
 }
