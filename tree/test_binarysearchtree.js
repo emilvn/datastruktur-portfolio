@@ -225,13 +225,29 @@ function test_getNext() {
 
 function test_remove() {
   const bst = makeBST();
-  const size = bst.size;
+  bst.add(35);
+  bst.add(45);
+  bst.add(37);
+  bst.add(39);
+  bst.add(31);
+
   bst.remove(30);
-  if (bst.size === size) {
+
+  const allValues = [10, 20, 40, 50, 35, 45, 37, 39, 31];
+  const foundValues = [];
+
+  for (const v of bst) {
+    foundValues.push(v);
+  }
+
+  if (
+    !allValues.every((v) => foundValues.includes(v)) &&
+    !foundValues.every((v) => allValues.includes(v))
+  ) {
     logError("FAILED: remove");
     logError("\tfailed to remove value from bst");
-    logError("\tExpected size: " + (size - 1));
-    logError("\tGot size: " + bst.size);
+    logError("\tExpected values: " + allValues);
+    logError("\tGot values: " + foundValues);
     return false;
   }
 
@@ -295,7 +311,7 @@ export const tests = [
 ];
 
 // change to true to run test file seperately
-if (false) {
+if (true) {
   console.log("Running BST tests...");
   runTests(tests);
 }

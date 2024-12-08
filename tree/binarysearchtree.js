@@ -245,14 +245,22 @@ export default class BST {
     const parent = node.parent;
     // if the node has no parent, it is the root node
     if (!parent) {
-      if (node.right) {
-        this.root = node.right;
-        this.root.left = node.left;
-      } else if (node.left) {
+      // preserve the child nodes of the root node and replace the root node with one of them
+      if (node.left) {
+        // set the left child as the new root node
         this.root = node.left;
-        this.root.right = node.right;
+        // find the rightmost node of the new root
+        let rightmost = node.left;
+        while (rightmost.right) {
+          rightmost = rightmost.right;
+        }
+        // set the removed nodes right child as the rightmost nodes right child
+        rightmost.right = node.right;
       } else {
-        this.root = null;
+        // if the left child is null, set the right child as the new root node
+        // this will preserve the entire sub tree as the left is null
+        // set the right child as the new root node
+        this.root = node.right;
       }
       this.size--;
       return;
@@ -322,26 +330,29 @@ export class BSTNode {
    */
   removeChild(node) {
     if (this._left === node) {
-      // preserve the child nodes
-      if (node.right) {
-        this.left = node.right;
-        this.left.left = node.left;
-      } else if (node.left) {
+      if (node.left) {
+        // if the node has a left child, set the left child as the left child of the parent
         this.left = node.left;
-        this.left.right = node.right;
+        // find the rightmost node of the removed nodes left child
+        let rightmost = node.left;
+        while (rightmost.right) {
+          rightmost = rightmost.right;
+        }
+        // set the removed nodes right child as the rightmost nodes right child
+        rightmost.right = node.right;
       } else {
-        this.left = null;
+        this.left = node.right;
       }
     } else if (this._right === node) {
-      // preserve the child nodes
       if (node.right) {
         this.right = node.right;
-        this.right.left = node.left;
-      } else if (node.left) {
-        this.right = node.left;
-        this.right.right = node.right;
+        let leftmost = node.right;
+        while (leftmost.left) {
+          leftmost = leftmost.left;
+        }
+        leftmost.left = node.left;
       } else {
-        this.right = null;
+        this.right = node.left;
       }
     }
     this.maintain();

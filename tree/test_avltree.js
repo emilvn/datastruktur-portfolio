@@ -186,13 +186,28 @@ function test_getNext() {
 
 function test_remove() {
   const avl = makeAVLTree();
-  const size = avl.size;
-  avl.remove(40);
-  if (avl.size === size) {
+  avl.add(35);
+  avl.add(45);
+  avl.add(37);
+  avl.add(39);
+  avl.add(31);
+  avl.remove(30);
+
+  const allValues = [10, 20, 40, 50, 35, 45, 37, 39, 31];
+  const foundValues = [];
+
+  for (const v of avl) {
+    foundValues.push(v);
+  }
+
+  if (
+    !allValues.every((v) => foundValues.includes(v)) &&
+    !foundValues.every((v) => allValues.includes(v))
+  ) {
     logError("FAILED: remove");
     logError("\tfailed to remove value from bst");
-    logError("\tExpected size: " + (size - 1));
-    logError("\tGot size: " + avl.size);
+    logError("\tExpected values: " + allValues);
+    logError("\tGot values: " + foundValues);
     return false;
   }
 
@@ -253,7 +268,7 @@ export const tests = [
   test_getPrev,
 ];
 // change to true to run test file seperately
-if (false) {
+if (true) {
   console.log("Running AVLTree tests...");
   runTests(tests);
 }
